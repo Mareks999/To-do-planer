@@ -1,0 +1,180 @@
+/* Pamatstili: krāsu mainīgie (Light/Dark), pogas, ievades lauki, segmentētā poga. */
+:root {
+  --bg: #e6e6ea;
+  --sf: #fff;
+  --ink: #16161d;
+  --mut: #6b6b76;
+  --ln: #dcdce2;
+  --fld: #efeff2;
+  --ac: #5b3df5;
+  --on: #fff;
+  --bl: #0f0fe8;
+  --pill: #d9d9de;
+  --seg: #77777d;
+  --pp: #ece8ff;
+  --pt: #5b3df5;
+  --hi: #c62828;
+  --hb: #ffe3e3;
+  --lo: #2e7d32;
+  --lb: #def5e3;
+  --gr: #22b35a;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+:root[data-theme="dark"] {
+  --bg: #111115;
+  --sf: #1c1c22;
+  --ink: #f1f1f4;
+  --mut: #a0a0ab;
+  --ln: #2f2f38;
+  --fld: #26262d;
+  --pill: #2f2f38;
+  --seg: #33333b;
+  --pp: #2b2457;
+  --pt: #b9a8ff;
+  --hi: #ff8a80;
+  --hb: #4a1f22;
+  --lo: #7ad08a;
+  --lb: #1d3b27;
+  --bl: #5a5aff;
+}
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font:
+    15px/1.5 Inter,
+    system-ui,
+    "Segoe UI",
+    sans-serif;
+}
+[hidden] {
+  display: none !important;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  margin: 0;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  background: var(--pill);
+  border-radius: 8px;
+  padding: 0.5rem 0.9rem;
+}
+button:hover {
+  filter: brightness(0.96);
+}
+.p {
+  background: var(--ac);
+  color: var(--on);
+  font-weight: 500;
+}
+.bl {
+  background: var(--bl);
+  color: #fff;
+}
+.blk {
+  background: #000;
+  color: #fff;
+  padding: 0.7rem;
+}
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid transparent;
+  background: var(--fld);
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+}
+:focus-visible {
+  outline: 2px solid var(--ac);
+  outline-offset: 2px;
+}
+label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.sub {
+  color: var(--mut);
+  font-size: 0.85rem;
+  margin: 0.2rem 0 0;
+}
+.er {
+  color: var(--hi);
+  margin: 0;
+  min-height: 1.3em;
+  font-size: 0.88rem;
+}
+.f {
+  display: grid;
+  gap: 0.8rem;
+}
+.seg {
+  display: inline-flex;
+  gap: 2px;
+  background: var(--seg);
+  border-radius: 9px;
+  padding: 3px;
+}
+.seg button {
+  background: transparent;
+  color: #fff;
+  border-radius: 7px;
+  padding: 0.35rem 1rem;
+}
+.seg button[aria-pressed="true"] {
+  background: var(--sf);
+  color: var(--ink);
+  font-weight: 600;
+}
+.ghost {
+  background: transparent;
+  border: 1px solid var(--ln);
+}
+.dz {
+  background: transparent;
+  color: var(--hi);
+  border: 1px solid var(--hi);
+}
+.ib {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  color: var(--mut);
+}
+.ib:hover {
+  color: var(--ink);
+}
+.ib.del:hover {
+  color: var(--hi);
+}
+.ib svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}

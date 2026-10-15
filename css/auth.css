@@ -1,0 +1,25 @@
+/* Pieteikšanās un reģistrācija: balta kartīte pelēkā fonā. */
+#auth {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.card {
+  width: min(380px, 100%);
+  background: var(--sf);
+  border-radius: 14px;
+  padding: 1.5rem;
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+.card .seg {
+  display: flex;
+}
+.card .seg button {
+  flex: 1;
+}
+.card .p {
+  padding: 0.65rem;
+}

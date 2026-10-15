@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="lv">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Plānotājs</title>
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("pl_theme") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      } catch {}
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/auth.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/tasks.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <section id="auth" hidden>
+      <div class="card">
+        <div class="seg">
+          <button data-a="at" data-id="in">Pieslēgties</button
+          ><button data-a="at" data-id="up">Reģistrēties</button>
+        </div>
+        <form id="fin" class="f" novalidate>
+          <label>E-pasts<input name="e" type="email" autocomplete="email" /></label>
+          <label>Parole<input name="p" type="password" autocomplete="current-password" /></label>
+          <p class="er" role="alert"></p>
+          <button class="p bl">Pieslēgties</button>
+        </form>
+        <form id="fup" class="f" novalidate hidden>
+          <h3>Izveidot kontu</h3>
+          <label>Vārds<input name="n" maxlength="50" autocomplete="name" /></label>
+          <label>E-pasts<input name="e" type="email" autocomplete="email" /></label>
+          <label
+            >Parole (vismaz 8 rakstzīmes, burts un cipars)<input
+              name="p"
+              type="password"
+              autocomplete="new-password"
+          /></label>
+          <label
+            >Atkārtot paroli<input name="p2" type="password" autocomplete="new-password"
+          /></label>
+          <p class="er" role="alert"></p>
+          <button class="p bl">Izveidot kontu</button>
+        </form>
+        <p class="sub">
+          Parole tiek glabāta tikai kā sāļots PBKDF2 hash. Dati tiek glabāti tikai šajā pārlūkā.
+        </p>
+      </div>
+    </section>
+    <div id="app" hidden>
+      <header class="top">
+        <h1>Plānotājs</h1>
+        <nav id="nav">
+          <button data-a="go" data-id="me">Mani Uzdevumi</button
+          ><button data-a="go" data-id="projects">Projekti</button
+          ><button data-a="go" data-id="user">User</button>
+        </nav>
+      </header>
+      <main>
+        <section id="v-me">
+          <button class="back" id="bk" data-a="go" data-id="projects" hidden>← Projekti</button>
+          <h2 id="ttl"></h2>
+          <p id="sub" class="sub"></p>
+          <div class="pg"><span id="pgb"></span></div>
+          <p id="msg" class="er" role="status"></p>
+          <div class="task-tools">
+            <div class="task-actions">
+              <div class="seg">
+                <button data-a="tab" data-id="active">Aktīvie</button
+                ><button data-a="tab" data-id="done">Pabeigtie</button>
+              </div>
+              <button class="p newtask" data-a="nt">+ Jauns uzdevums</button>
+            </div>
+            <div class="filters">
+              <select id="dz" aria-label="Termiņš">
+                <option value="all">Visi termiņi</option>
+                <option value="today">Šodien</option>
+                <option value="week">Nākamās 7 dienas</option>
+                <option value="late">Nokavētie</option>
+              </select>
+              <select id="fl" aria-label="Prioritāte">
+                <option value="all">Visas prioritātes</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+              <select id="so" aria-label="Kārtošana">
+                <option value="due">Pēc termiņa</option>
+                <option value="prio">Pēc prioritātes</option>
+                <option value="name">Pēc nosaukuma</option>
+              </select>
+              <input
+                id="sq"
+                type="search"
+                placeholder="Meklēt uzdevumus"
+                aria-label="Meklēt uzdevumus"
+              />
+            </div>
+          </div>
+          <button class="ghost" data-a="cc" id="cc" hidden>Dzēst pabeigtos</button>
+          <div id="list"></div>
+          <section id="team" hidden>
+            <div class="sec">
+              <h3>Dalībnieki</h3>
+              <ul id="mem"></ul>
+            </div>
+            <div id="own" class="sec">
+              <h3>Uzaicināt reģistrētu lietotāju</h3>
+              <form id="fi">
+                <input
+                  name="e"
+                  type="email"
+                  placeholder="lietotajs@epasts.lv"
+                  aria-label="Lietotāja e-pasts"
+                /><button class="p">Uzaicināt</button>
+              </form>
+              <p id="imsg" class="sub"></p>
+            </div>
+            <div class="danger">
+              <button class="dz" id="dp" data-a="dp">Dzēst projektu</button
+              ><button class="dz" id="lv" data-a="rm" hidden>Pamest projektu</button>
+            </div>
+          </section>
+        </section>
+        <section id="v-pr" hidden>
+          <h2>Projekti</h2>
+          <p class="sub">Izveido projektus un uzaicini citus lietotājus.</p>
+          <form id="np">
+            <input
+              name="n"
+              maxlength="60"
+              placeholder="Jauna projekta nosaukums"
+              aria-label="Projekta nosaukums"
+            /><button class="p">Izveidot projektu</button>
+          </form>
+          <p id="pmsg" class="er" role="status"></p>
+          <div id="invs"></div>
+          <h3 class="gh">Mani projekti</h3>
+          <div id="pl"></div>
+        </section>
+        <section id="v-us" hidden>
+          <div class="prof">
+            <div class="ph">
+              <div>
+                <h2>Lietotāja profils</h2>
+                <p class="sub">Pārvaldi savu kontu un izskatu.</p>
+              </div>
+              <button data-a="en">Rediģēt</button>
+            </div>
+            <div class="pu">
+              <span class="av big" id="wav"></span>
+              <div>
+                <b id="who"></b>
+                <p class="sub" id="wem"></p>
+              </div>
+            </div>
+            <h3>Iestatījumi</h3>
+            <div class="set">
+              <span>Izskats</span>
+              <div class="seg">
+                <button data-a="th" data-id="light">Light</button
+                ><button data-a="th" data-id="dark">Dark</button>
+              </div>
+            </div>
+            <button data-a="pw">Mainīt paroli</button>
+            <button class="blk" data-a="lo">Iziet</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <dialog id="dlg">
+      <form id="f" class="f" novalidate>
+        <h3 id="dt"></h3>
+        <label>Nosaukums<input name="ti" maxlength="100" /></label>
+        <label>Apraksts<textarea name="ds" maxlength="500" rows="3"></textarea></label>
+        <div class="row">
+          <label>Termiņš<input type="date" name="du" /></label
+          ><label
+            >Prioritāte<select name="pr">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+            </select></label
+          >
+        </div>
+        <label id="asw" hidden>Piešķirts dalībniekam<select name="as" id="as"></select></label>
+        <p class="er" role="alert"></p>
+        <div class="end">
+          <button type="button" data-a="cl">Atcelt</button><button class="p">Saglabāt</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="pwd">
+      <form id="fpw" class="f" novalidate>
+        <h3>Mainīt paroli</h3>
+        <label
+          >Pašreizējā parole<input name="c" type="password" autocomplete="current-password"
+        /></label>
+        <label>Jaunā parole<input name="p" type="password" autocomplete="new-password" /></label>
+        <label
+          >Atkārtot jauno paroli<input name="p2" type="password" autocomplete="new-password"
+        /></label>
+        <p class="er" role="alert"></p>
+        <div class="end">
+          <button type="button" data-a="cl">Atcelt</button><button class="p">Saglabāt</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="nmd">
+      <form id="fnm" class="f" novalidate>
+        <h3>Mainīt vārdu</h3>
+        <label>Vārds<input name="n" maxlength="50" /></label>
+        <p class="er" role="alert"></p>
+        <div class="end">
+          <button type="button" data-a="cl">Atcelt</button><button class="p">Saglabāt</button>
+        </div>
+      </form>
+    </dialog>
+    <script src="js/helpers.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
